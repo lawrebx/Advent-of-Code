@@ -69,16 +69,24 @@ for row in grid:
   except ValueError:
     pass
 
-def valid_moves(row_pos, col_pos):
-  if row_pos == 0:
-    up = None
-  else:
-    up = [row_pos - 1, col_pos]
-  
-  if row_pos == len(grid):
-    down = None
-  else:
-    down = [row_pos + 1, col_pos]
+class pathNode():
 
+  def __init__(self,x_pos,y_pos,elevation):
+    self.x_pos = x_pos
+    self.y_pos = y_pos
+    self.elevation = elevation
+    self.visited = 0
+    self.valid_neighbors = []
 
+  def valid_neighbor(self,neighbor_x,neighbor_y,n_elevation):
+    
+    if abs(neighbor_x - self.x_pos) + abs(neighbor_y - self.y_pos) != 1:
+      return 0
+    
+    if ord(n_elevation) > ord(self.elevation):
+      return 0
+    
+    self.valid_neighbors.append([neighbor_x,neighbor_y])
 
+  def visit_node(self):
+    self.visited = 1
