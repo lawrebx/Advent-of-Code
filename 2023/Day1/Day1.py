@@ -35,24 +35,6 @@ In this example, the calibration values of these four lines are 12, 38, 15, and 
 
 Consider your entire calibration document. What is the sum of all of the calibration values?
 """
-"""
-line_count = 0
-calibration_values = []
-
-for line in calibration_input:
-    line_count = line_count + 1
-    line_digits = [int(s) for s in list(line) if s.isdigit()]
-    if len(line_digits) == 0:
-        raise Exception(f'Line read error - no coordinates found in line {line_count}.')
-    elif len(line_digits) > 0:
-        _calibration_value = int(str(line_digits[0]) + str(line_digits[-1]))
-        calibration_values.append(_calibration_value)
-    else:
-        raise Exception(f'Line read error - Unable to parse line {line_count}.')
-    
-print(f'Part 1 - The sum of the calibration values is {sum(calibration_values)}')
-
-"""
 
 ################################ PART TWO ################################
 """
@@ -71,46 +53,51 @@ zoneight234
 In this example, the calibration values are 29, 83, 13, 24, 42, 14, and 76. Adding these together produces 281.
 
 """
-number_dict = {'one':'1', 
-                'two':'2', 
-                'three':'3', 
-                'four':'4', 
-                'five':'5', 
-                'six':'6', 
-                'seven':'7', 
-                'eight':'8', 
-                'nine':'9'}
 
-line_count = 0
-calibration_values = []
+def day1(input, part_flag = 1):
 
-#calibration_input = calibration_input[0:9]
+    number_dict = {'one':'1', 
+                    'two':'2', 
+                    'three':'3', 
+                    'four':'4', 
+                    'five':'5', 
+                    'six':'6', 
+                    'seven':'7', 
+                    'eight':'8', 
+                    'nine':'9'}
 
-for line in calibration_input:
-    raw_line = line
-    # break down into array to track integer positions
-    line_int = list(line)
-    line_digits = []
-    for i, v in enumerate(line_int):
-        if v.isdigit():
-            line_digits.append(v) 
+    line_count = 0
+    calibration_values = []
+
+    #calibration_input = calibration_input[0:9]
+
+    for line in calibration_input:
+        # break down into array to track integer positions
+        line_int = list(line)
+        line_digits = []
+        for i, v in enumerate(line_int):
+            if v.isdigit():
+                line_digits.append(v) 
+            elif part_flag == 2:
+                for key, val in number_dict.items():
+                    if ''.join(line_int[i:]).find(key) == 0:
+                        line_digits.append(number_dict[key]) 
+            else:
+                pass
+
+        if len(line_digits) == 0:
+            raise Exception(f'Line read error - no coordinates found in line {line_count}.')
+        elif len(line_digits) > 0:
+            _calibration_value = int(str(line_digits[0]) + str(line_digits[-1]))
+            calibration_values.append(_calibration_value)
         else:
-            for key, val in number_dict.items():
-                if ''.join(line_int[i:]).find(key) == 0:
-                    line_digits.append(number_dict[key]) 
-                else:
-                    pass
+            raise Exception(f'Line read error - Unable to parse line {line_count}.')
 
-    if len(line_digits) == 0:
-        raise Exception(f'Line read error - no coordinates found in line {line_count}.')
-    elif len(line_digits) > 0:
-        _calibration_value = int(str(line_digits[0]) + str(line_digits[-1]))
-        calibration_values.append(_calibration_value)
-    else:
-        raise Exception(f'Line read error - Unable to parse line {line_count}.')
+    return calibration_values
 
-    print(f'Raw Line:{raw_line}')
-    print(f'Extracted Digits:{line_digits}')
-    print(f'Calibration Values: {_calibration_value}')
-    
-print(f'Part 2 - The sum of the calibration values is {sum(calibration_values)}')
+if __name__ == '__main__':
+
+    aoc_parts = [1,2]
+
+    for aoc_part in aoc_parts:
+        print(f'Part {aoc_part} - The sum of the calibration values is {sum(day1(input_file, aoc_part))}')
