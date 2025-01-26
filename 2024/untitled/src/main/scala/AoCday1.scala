@@ -1,3 +1,5 @@
+import utils.FileReader
+
 /*
 
 You haven't even left yet and the group of Elvish Senior Historians has already
@@ -54,5 +56,33 @@ Your actual left and right lists contain many location IDs. What is the total di
  */
 
 object AoCday1 {
+  def parseInput(input: String): (List[Int], List[Int]) = {
+    val lines = input.trim.split("\n")
+    val (leftNums, rightNums) = lines.map { line =>
+      System.out.println(s"Line: '$line'")
+      val parts = line.trim.split("\\s+").filter(_.nonEmpty)
+      System.out.println(s"Parts: ${parts.mkString(",")}")
+      (parts(0).toInt, parts(1).toInt)
+    }.unzip
+    (leftNums.toList, rightNums.toList)
+  }
 
+  def calculateDistance(left: List[Int], right: List[Int]): Int = {
+    System.out.println("Calculating distance...")
+    val sortedLeft = left.sorted
+    val sortedRight = right.sorted
+    System.out.println(s"Sorted L: ${sortedLeft.mkString(",")}")
+    System.out.println(s"Sorted R: ${sortedRight.mkString(",")}")
+    val sum = sortedLeft.zip(sortedRight).map { case (l, r) => math.abs(l - r) }.sum
+    System.out.println(s"Sum: $sum")
+    sum
+  }
+
+  def main(args: Array[String]): Unit = {
+    FileReader.readFile("/input.txt").foreach { content =>
+      val (left, right) = parseInput(content)
+      val result = calculateDistance(left, right)
+      System.out.println(s"Total distance: $result")
+    }
+  }
 }

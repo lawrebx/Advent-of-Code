@@ -5,4 +5,8 @@ ThisBuild / scalaVersion := "3.3.4"
 lazy val root = (project in file("."))
   .settings(
     name := "untitled"
+
   )
+
+// Include resources directory
+Compile / unmanagedResourceDirectories += baseDirectory.value / "src/main/resources"
