@@ -2,7 +2,8 @@ input = []
 
 with open('input.txt', "r", encoding="utf-8") as file:
     for count, line in enumerate(file, start=1):
-        input.append(line)
+        cleaned = line.replace("\n", ' ')
+        input.append(cleaned)
 
 inputs = [line for line in input]
 
@@ -23,71 +24,45 @@ for line in inputs:
 
 rows = len(inputs)
 
-digit_length = 3
+digit_length = 4
 
 calc_dict = {}
 calc_list = []
+val_list = []
 
 calc_count = 0
 
-for r in range(0,rows):
+#print(inputs)
 
-    calc_dict = {}
+for c in range(0,cols):
 
-    calc_row = inputs[r]
+    vals = []
 
-    #print(f'Cal Row: {calc_row}')
+    for r in range(0,rows):
+        new_val = inputs[r][c]
+        if new_val == ' ':
+            pass
+        else:
+            vals.append(new_val)
+    
+    vals = ''.join(vals)
 
-    for c in range(0,cols):
-        #print(f'Calc Row: {calc_row[c]}')
-        calc_dict[c] = calc_row[c]
+    #print(vals)
 
-    calc_list.append(calc_dict)
+    if vals == '' or '':
+        val_list = [int(item) for item in val_list]
+        calc_list.append(val_list)
+        val_list = []
+    else:
+        val_list.append(vals)
 
-#print(calc_list)
-
-calc_dict_final = {}
-
-for calc_row in calc_list:
-    for c in range(0,cols):
-        try:
-            calc_dict_final[c] = str(calc_dict_final[c]) + str(calc_row[c])
-        except:
-            calc_dict_final[c] = str(calc_row[c])
-
-#print(calc_dict_final)
-
-new_digit = ''
-
-digit_list = []
-calcs = []
-
-for i in range(0,rows):   
-
-    if (i+1) % (digit_length+1) == 0:
-        #print(f'{i} - NEXT CALCULATION!!!')
-        calcs.append(digit_list)
-        digit_list = []
-    else: 
-        try:
-            new_digits = "".join(calc_dict_final[i].replace('\n', '').replace('\r', '').split())
-            digit_list.append(int(new_digits))
-        except Exception as e:
-            print(i)
-            print(calc_dict_final)
-            print(calc_dict_final[i])
-            print(e)
-            break
-
-#print(calcs)
+    #print(calc_list)
 
 final_res = 0
 
-print(len(calc_input))
-
 for cidx, calc in enumerate(calc_input):
 
-    calc_ints = calcs[cidx]
+    calc_ints = calc_list[cidx]
 
     cres = None
 
@@ -100,7 +75,7 @@ for cidx, calc in enumerate(calc_input):
             else:
                 cres += cint
     
-    print(f'Inputs: {calc_ints} | Operation: {calc} | Sum Result: {cres}')
+    #print(f'Inputs: {calc_ints} | Operation: {calc} | Sum Result: {cres}')
 
     if cres == None:
         print('ERROR')
@@ -108,3 +83,4 @@ for cidx, calc in enumerate(calc_input):
         final_res = final_res + cres
 
 print(final_res)
+
