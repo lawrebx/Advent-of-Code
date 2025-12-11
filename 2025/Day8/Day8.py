@@ -35,7 +35,40 @@ for coord in input:
 if min_dist != None:
     print(f'Min Distance: {min_dist//1} | Min Coords {min_coords}')
 
-for combo in combo_list:
-    print(combo)
+print('-------------------------')
+sorted_list = sorted(combo_list, key=lambda combo_list: combo_list[2])
+
+circuits = {}
+circuit_count = 0
+
+for combo_d in sorted_list:
+    combo = combo_d[0], combo_d[1]
+
+    combo = list(combo)
+
+    if circuits == {}:
+        circuits[circuit_count] = combo
+        print(circuits)
+        continue
+
+    existing_circuit = 0
+
+    for key in circuits:
+        if combo[0] in circuits[key]:
+            circuits[key].extend(combo)
+            continue
+        elif combo[1] in circuits[key]:
+            circuits[key].extend(combo)
+            continue   
+
+    circuit_count = circuit_count + 1
+    circuits[circuit_count] = combo
+    
+    print(circuits)
+
+sorted_circuits = dict(sorted(circuits.items(), key=lambda item: len(item[1]), reverse=True))
+
+for c in sorted_circuits:
+    print(len(circuits[c]))
 
 
